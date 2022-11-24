@@ -1,0 +1,100 @@
+import { GoogleAuthProvider } from 'firebase/auth';
+import React, { useContext, useState } from 'react';
+import { useForm } from 'react-hook-form'
+import toast from 'react-hot-toast';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import Header from '../../Components/Header/Header';
+import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
+
+
+const Login = () => {
+    const { LoginWithEmailPassword, providerLogin } = useContext(AuthContext)
+    const [logError, setLogError] = useState('')
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const from = location.state?.from?.pathname || '/'
+
+
+    const googleProvider = new GoogleAuthProvider()
+
+
+    const { register, formState: { errors }, handleSubmit } = useForm()
+
+    const handleLogin = data => {
+        setLogError('')
+        LoginWithEmailPassword(data.email, data.password)
+            .then(result => {
+                setLogError('');
+                toast.success('Login Successful')
+                navigate(from, { replace: true })
+            })
+            .catch(error => {
+                console.error(error);
+                setLogError(error.message)
+
+            })
+    }
+
+    // Google Sign In======================
+    const handleGoogleSignIn = () => {
+        providerLogin(googleProvider)
+            .then(result => {
+                toast.success('Login Successfull');
+                navigate(from, { replace: true })
+            })
+            .catch(error => console.error(error))
+
+    }
+
+    return (
+        <>
+            <Header></Header>
+            <div className='hero min-h-screen bg-slate-100 px-5'>
+                <div className='shadow-lg rounded-xl p-10 sm:w-full lg:w-1/3 bg-white'>
+                    <p className='text-2xl font-bold text-center'>Login</p>
+                    {/* Form */}
+                    <form onSubmit={handleSubmit(handleLogin)} className='my-5'>
+                        <div className='py-3'>
+                            <input
+                                {...register("email", { required: 'Email is required' })}
+                                type="email" placeholder="email" className="input input-bordered w-full" />
+                            {errors.email && <p className='text-right text-red-600 my-1 text-xs'>{errors.email?.message}</p>}
+                        </div>
+                        <div className='py-3'>
+                            <input
+                                {...register("password",
+                                    {
+                                        required: 'Passwrd is required',
+                                        minLength: { value: 6, message: 'Minimum 6 characters required' }
+                                    })}
+                                type="password" placeholder="password" className="input input-bordered w-full" />
+                            {errors.password && <p className='text-right text-red-600 my-1 text-xs'>{errors.password?.message}</p>}
+                            <label>
+                                <Link><small className='label-text-alt text-xs px-3'>Forgot Password?</small></Link>
+                            </label>
+                        </div>
+                        {/* Firebase Error Message */}
+                        {
+                            logError && <p className='text-red-500 text-center my-2'>({logError})</p>
+                        }
+
+                        <input className='btn bg-slate-700 w-full py-3' type='submit' value='Login' />
+                    </form>
+
+                    <p className='text-center'>
+                        New here?
+                        <Link to='/register'><span className=' text-blue-600'> Create new Account</span></Link>
+                    </p>
+                    {/* Divider */}
+                    <div className="divider">OR</div>
+
+                    <button onClick={handleGoogleSignIn} className='btn btn-outline w-full mt-5'>Continue with Google</button>
+
+                </div>
+            </div>
+        </>
+    );
+};
+
+export default Login;
