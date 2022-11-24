@@ -1,7 +1,7 @@
 import React from 'react';
 import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 import toast from 'react-hot-toast';
 import Header from '../../Components/Header/Header';
@@ -10,6 +10,10 @@ import Header from '../../Components/Header/Header';
 const Register = () => {
     const { RegisterWithEmailPassword, updateUserInfo } = useContext(AuthContext)
     const [regError, setRegError] = useState('')
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || '/'
+
     const { register, formState: { errors }, handleSubmit } = useForm()
 
     const handleRegister = data => {
@@ -19,12 +23,13 @@ const Register = () => {
                 toast.success("You've been registered")
                 const userInfo = {
                     displayName: data.name,
-                    photURL: data.photoUrl,
+                    photURL: data.photoUrl
                 }
                 updateUserInfo(userInfo)
                     .then(() => {
                         setRegError('')
-                        toast.success('Profile updated')
+                        storeUser(data.name, data.email)
+                        navigate(from, { replace: true })
                     })
                     .catch(error => console.error(error))
             })
@@ -32,9 +37,25 @@ const Register = () => {
                 console.error(error);
                 setRegError(error.message)
             })
-
-
     }
+
+    const storeUser = (name, email) => {
+        const user = { name, email };
+
+        fetch('https://final-server-one.vercel.app/users', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        })
+            .then(res => res.json())
+            .then(data => {
+                navigate(from, { replace: true })
+            })
+            .catch(error => console.log(error))
+    }
+
     return (
         <>
             <Header></Header>

@@ -12,14 +12,9 @@ const Login = () => {
     const [logError, setLogError] = useState('')
     const navigate = useNavigate();
     const location = useLocation();
-
     const from = location.state?.from?.pathname || '/'
-
-
-    const googleProvider = new GoogleAuthProvider()
-
-
     const { register, formState: { errors }, handleSubmit } = useForm()
+    const googleProvider = new GoogleAuthProvider()
 
     const handleLogin = data => {
         setLogError('')
