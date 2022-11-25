@@ -1,12 +1,32 @@
 import React from 'react';
 import { useForm } from 'react-hook-form'
+import toast from 'react-hot-toast';
 
 
-const AddProductModal = () => {
+const AddProductModal = ({ setModal }) => {
     const { register, formState: { errors }, handleSubmit } = useForm()
 
     const handleAddProduct = data => {
-        console.log(data);
+
+
+        const product = {
+            brand: data.Brand,
+            model: data.model,
+            price: data.price
+        }
+        fetch('https://final-server-one.vercel.app/products', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(product)
+        })
+            .then(res => res.json())
+            .then(data => {
+                setModal(false);
+                toast.success('Your product has been added')
+            })
+            .catch(error => console.log(error))
 
     }
 

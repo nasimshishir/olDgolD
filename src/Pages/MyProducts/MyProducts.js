@@ -1,10 +1,30 @@
-import React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import React, { useContext, useState } from 'react';
 import AddProductModal from '../../Components/AddProductModal/AddProductModal';
+import Spinner from '../../Components/Spinner/Spinner'
+import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 
 const MyProducts = () => {
+    const { user } = useContext(AuthContext)
+    const [modal, setModal] = useState(true);
+
+    const { data: myProducts = [], refetch, isLoading } = useQuery({
+        queryKey: ['appointmentOptions',],
+        queryFn: async () => {
+            const res = await fetch(`http://localhost:5000/products?email=${user.email}`);
+            const data = await res.json();
+            return data
+        }
+    });
+
+    if (isLoading) {
+        return <Spinner></Spinner>
+    }
     return (
         <div>
-            <label htmlFor="product-form-modal" className="btn">Add Products</label>
+            <div>
+                <label htmlFor="product-form-modal" className="btn">Add Products</label>
+            </div>
 
             {/* My Products */}
             <div className="overflow-x-auto w-full">
@@ -152,7 +172,7 @@ const MyProducts = () => {
 
                 </table>
             </div>
-            <AddProductModal></AddProductModal>
+            {modal && <AddProductModal setModal={setModal} refetch={refetch}></AddProductModal>}
         </div>
     );
 };
