@@ -20,16 +20,16 @@ const Register = () => {
         setRegError('')
         RegisterWithEmailPassword(data.email, data.password)
             .then(result => {
-                toast.success("You've been registered")
+                if (result.user) {
+                    toast.success("You've been registered")
+                }
                 const userInfo = {
                     displayName: data.name,
                     photURL: data.photoUrl
                 }
                 updateUserInfo(userInfo)
                     .then(() => {
-                        setRegError('')
-                        storeUser(data.name, data.email)
-                        navigate(from, { replace: true })
+                        storeUser(data.name, data.email, data.userRole)
                     })
                     .catch(error => console.error(error))
             })
@@ -39,8 +39,13 @@ const Register = () => {
             })
     }
 
-    const storeUser = (name, email) => {
-        const user = { name, email };
+    const storeUser = (name, email, userRole) => {
+        const user = {
+            name,
+            email,
+            userRole,
+            verified: false
+        };
 
         fetch('https://final-server-one.vercel.app/users', {
             method: 'POST',
@@ -81,6 +86,14 @@ const Register = () => {
                                 {...register("email", { required: 'Email is required' })}
                                 type="email" placeholder="email" className="input input-bordered w-full" />
                             {errors.email && <p className='text-right text-red-600 my-1 text-xs'>{errors.email?.message}</p>}
+                        </div>
+                        <div className='py-3'>
+                            <select {...register("userRole", { required: 'This Field is required' })} className="select select-bordered w-full" placeholder='Register as...'>
+                                <option value="">Register as...</option>
+                                <option value="Buyer">Buyer</option>
+                                <option value="Seller">Seller</option>
+                            </select>
+                            {errors.userRole && <p className='text-right text-red-600 my-1 text-xs'>{errors.userRole?.message}</p>}
                         </div>
                         <div className='py-3'>
                             <input

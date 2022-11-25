@@ -60,7 +60,7 @@ const AddProductModal = ({ setModal, user, refetch }) => {
     }
 
     return (
-        <>
+        <div>
             <input type="checkbox" id="product-form-modal" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box relative">
@@ -148,7 +148,7 @@ const AddProductModal = ({ setModal, user, refetch }) => {
                 </div>
             </div>
 
-        </>
+        </div>
     );
 };
 
