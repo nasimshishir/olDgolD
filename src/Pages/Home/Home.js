@@ -25,8 +25,8 @@ const Home = () => {
 
             <section className='pb-20'>
                 <div className='text-center'>
-                    <h4 className='font-bold py-5 text-4xl text-black-500'>Categories</h4>
-                    <h5 className='font-normal text-4xl text-gray-400'>Types of Drones</h5>
+                    <h4 className='font-bold py-5 text-xl text-black-500'>Categories</h4>
+                    <h5 className='text-4xl text-gray-400'>Types of Drones</h5>
                 </div>
                 {/* Categories */}
                 <div className='container mx-auto grid grid-cols-3 gap-5 py-16'>

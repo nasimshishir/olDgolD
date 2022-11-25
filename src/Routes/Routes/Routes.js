@@ -20,10 +20,10 @@ const routes = createBrowserRouter([
                 }
             },
             {
-                path: '/categories/:name',
+                path: '/categories/:id',
                 element: <Products></Products>,
                 loader: async ({ params }) => {
-                    return fetch(`http://localhost:5000/products/${params.name}`)
+                    return fetch(`http://localhost:5000/products/${params.id}`)
                 }
             }
         ]
