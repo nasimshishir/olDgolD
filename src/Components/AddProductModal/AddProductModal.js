@@ -11,7 +11,7 @@ const AddProductModal = ({ setModal, user, refetch }) => {
     const { data: categories = [] } = useQuery({
         queryKey: ['categores',],
         queryFn: async () => {
-            const res = await fetch('http://localhost:5000/categories');
+            const res = await fetch('https://final-server-one.vercel.app/categories');
             const data = await res.json();
             return data
         }
@@ -42,7 +42,7 @@ const AddProductModal = ({ setModal, user, refetch }) => {
             adStatus: false
         }
 
-        fetch('http://localhost:5000/products', {
+        fetch('https://final-server-one.vercel.app/products', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'

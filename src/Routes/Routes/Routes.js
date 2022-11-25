@@ -24,7 +24,7 @@ const routes = createBrowserRouter([
                 path: '/categories/:id',
                 element: <Products></Products>,
                 loader: async ({ params }) => {
-                    return fetch(`http://localhost:5000/products/${params.id}`)
+                    return fetch(`https://final-server-one.vercel.app/products/${params.id}`)
                 }
             }
         ]
