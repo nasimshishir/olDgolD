@@ -1,20 +1,48 @@
+import { useQuery } from '@tanstack/react-query';
+import { format } from 'date-fns';
 import React from 'react';
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast';
 
 
-const AddProductModal = ({ setModal }) => {
+const AddProductModal = ({ setModal, user, refetch }) => {
     const { register, formState: { errors }, handleSubmit } = useForm()
+
+    const { data: categories = [] } = useQuery({
+        queryKey: ['categores',],
+        queryFn: async () => {
+            const res = await fetch('http://localhost:5000/categories');
+            const data = await res.json();
+            return data
+        }
+    });
 
     const handleAddProduct = data => {
 
+        const date = format(new Date(), 'PP');
+        console.log(date);
+
 
         const product = {
-            brand: data.Brand,
+            postDate: date,
+            brand: data.brand,
             model: data.model,
-            price: data.price
+            image: data.image,
+            category: data.category,
+            price: data.resalePrice,
+            orginalPrice: data.originalPrice,
+            location: data.location,
+            usedDuration: data.usedDuration,
+            condition: data.condition,
+            description: data.description,
+            sellerName: user.displayName,
+            sellerPhone: data.sellerPhone,
+            sellerEmail: user.email,
+            status: "available",
+            adStatus: false
         }
-        fetch('https://final-server-one.vercel.app/products', {
+
+        fetch('http://localhost:5000/products', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -24,7 +52,8 @@ const AddProductModal = ({ setModal }) => {
             .then(res => res.json())
             .then(data => {
                 setModal(false);
-                toast.success('Your product has been added')
+                toast.success('Your product has been added');
+                refetch()
             })
             .catch(error => console.log(error))
 
@@ -55,9 +84,10 @@ const AddProductModal = ({ setModal }) => {
                         <div className='py-3'>
                             <select {...register("category", { required: 'This Field is required' })} className="select select-bordered w-full" placeholder='Select category'>
                                 <option value="">Select category...</option>
-                                <option value="Excellent">Excellent</option>
-                                <option value="Good">Good</option>
-                                <option value="Fair">Fair</option>
+                                {
+                                    categories.map((category, i) => <option key={i} value={category.name}>{category.name}</option>)
+                                }
+
                             </select>
                             {errors.category && <p className='text-right text-red-600 my-1 text-xs'>{errors.category?.message}</p>}
                         </div>

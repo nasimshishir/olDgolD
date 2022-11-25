@@ -1,15 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useContext, useState } from 'react';
 import AddProductModal from '../../Components/AddProductModal/AddProductModal';
-import Spinner from '../../Components/Spinner/Spinner'
+// import Spinner from '../../Components/Spinner/Spinner'
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 
 const MyProducts = () => {
     const { user } = useContext(AuthContext)
     const [modal, setModal] = useState(true);
 
-    const { data: myProducts = [], refetch, isLoading } = useQuery({
-        queryKey: ['appointmentOptions',],
+
+    const { data: myProducts = [], refetch } = useQuery({
+        queryKey: ['products', user?.email],
         queryFn: async () => {
             const res = await fetch(`http://localhost:5000/products?email=${user.email}`);
             const data = await res.json();
@@ -17,9 +18,9 @@ const MyProducts = () => {
         }
     });
 
-    if (isLoading) {
-        return <Spinner></Spinner>
-    }
+    // if (isLoading) {
+    //     return <Spinner></Spinner>
+    // }
     return (
         <div>
             <div>
@@ -43,122 +44,39 @@ const MyProducts = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th>
-                                <label>
-                                    <input type="checkbox" className="checkbox" />
-                                </label>
-                            </th>
-                            <td>
-                                <div className="flex items-center space-x-3">
-                                    <div className="avatar">
-                                        <div className="mask mask-squircle w-12 h-12">
-                                            <img src="/tailwind-css-component-profile-2@56w.png" alt="Avatar Tailwind CSS Component" />
+
+                        {
+                            myProducts.map((product, i) => <tr>
+                                <th>
+                                    <label>
+                                        <p>{i + 1}</p>
+                                    </label>
+                                </th>
+                                <td>
+                                    <div className="flex items-center space-x-3">
+                                        <div className="avatar">
+                                            <div className="mask mask-squircle w-12 h-12">
+                                                <img src={product.image} alt="Avatar Tailwind CSS Component" />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div className="font-bold">{product.brand}</div>
+                                            <div className="text-sm opacity-50">{product.model}</div>
                                         </div>
                                     </div>
-                                    <div>
-                                        <div className="font-bold">Hart Hagerty</div>
-                                        <div className="text-sm opacity-50">United States</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                Zemlak, Daniel and Leannon
-                                <br />
-                                <span className="badge badge-ghost badge-sm">Desktop Support Technician</span>
-                            </td>
-                            <td>Purple</td>
-                            <th>
-                                <button className="btn btn-ghost btn-xs">details</button>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>
-                                <label>
-                                    <input type="checkbox" className="checkbox" />
-                                </label>
-                            </th>
-                            <td>
-                                <div className="flex items-center space-x-3">
-                                    <div className="avatar">
-                                        <div className="mask mask-squircle w-12 h-12">
-                                            <img src="/tailwind-css-component-profile-3@56w.png" alt="Avatar Tailwind CSS Component" />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="font-bold">Brice Swyre</div>
-                                        <div className="text-sm opacity-50">China</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                Carroll Group
-                                <br />
-                                <span className="badge badge-ghost badge-sm">Tax Accountant</span>
-                            </td>
-                            <td>Red</td>
-                            <th>
-                                <button className="btn btn-ghost btn-xs">details</button>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>
-                                <label>
-                                    <input type="checkbox" className="checkbox" />
-                                </label>
-                            </th>
-                            <td>
-                                <div className="flex items-center space-x-3">
-                                    <div className="avatar">
-                                        <div className="mask mask-squircle w-12 h-12">
-                                            <img src="/tailwind-css-component-profile-4@56w.png" alt="Avatar Tailwind CSS Component" />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="font-bold">Marjy Ferencz</div>
-                                        <div className="text-sm opacity-50">Russia</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                Rowe-Schoen
-                                <br />
-                                <span className="badge badge-ghost badge-sm">Office Assistant I</span>
-                            </td>
-                            <td>Crimson</td>
-                            <th>
-                                <button className="btn btn-ghost btn-xs">details</button>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>
-                                <label>
-                                    <input type="checkbox" className="checkbox" />
-                                </label>
-                            </th>
-                            <td>
-                                <div className="flex items-center space-x-3">
-                                    <div className="avatar">
-                                        <div className="mask mask-squircle w-12 h-12">
-                                            <img src="/tailwind-css-component-profile-5@56w.png" alt="Avatar Tailwind CSS Component" />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="font-bold">Yancy Tear</div>
-                                        <div className="text-sm opacity-50">Brazil</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                Wyman-Ledner
-                                <br />
-                                <span className="badge badge-ghost badge-sm">Community Outreach Specialist</span>
-                            </td>
-                            <td>Indigo</td>
-                            <th>
-                                <button className="btn btn-ghost btn-xs">details</button>
-                            </th>
-                        </tr>
+                                </td>
+                                <td>
+                                    {product.category}
+                                    <br />
+                                    <span className="badge badge-ghost badge-sm">{product.status}</span>
+                                </td>
+                                <td>{product.price}</td>
+                                <th>
+                                    <button className="btn btn-ghost btn-xs">details</button>
+                                </th>
+                            </tr>)
+                        }
+
                     </tbody>
                     <tfoot>
                         <tr>
@@ -172,7 +90,11 @@ const MyProducts = () => {
 
                 </table>
             </div>
-            {modal && <AddProductModal setModal={setModal} refetch={refetch}></AddProductModal>}
+            {modal && <AddProductModal
+                setModal={setModal}
+                refetch={refetch}
+                user={user}
+            ></AddProductModal>}
         </div>
     );
 };
