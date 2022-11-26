@@ -12,15 +12,14 @@ const Header = () => {
     }
     const menuItems = <>
         <li><Link to="/">Home</Link></li>
-        <li><Link to="/appointment">Appointment</Link></li>
-        <li><Link to="/services">Services</Link></li>
         <li><Link to="/blog">Blog</Link></li>
     </>
 
     const userMenu = <>
-        <li><Link to="/addservice">Add Service</Link></li>
-        <li><Link to="/orders">Orders</Link></li>
-        <li><Link to="/myreviews">My Reviews</Link></li>
+        {/* {user.userRole === "Seller" && <li><Link to="/dashboard/myproducts">Dashboard</Link></li>} */}
+        {/* {user.userRole === "Buyer" && <li><Link to="/dashboard/mybookings">Dashboard</Link></li>} */}
+        {/* {user.userRole === "Admin" && <li><Link to="/dashboard/myusers">Dashboard</Link></li>} */}
+
         <li><button className='btn btn-outline' onClick={handleLogOut}>Logout</button></li>
     </>
     return (

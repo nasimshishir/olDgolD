@@ -20,7 +20,6 @@ const AddProductModal = ({ setModal, user, refetch }) => {
     const handleAddProduct = data => {
 
         const date = format(new Date(), 'PP');
-        console.log(date);
 
 
         const product = {

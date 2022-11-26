@@ -77,8 +77,8 @@ const Register = () => {
                         </div>
                         <div className='py-3'>
                             <input
-                                {...register("photoUrl", { required: 'Photo URL is required' })}
-                                type="text" placeholder="your photo url" className="input input-bordered w-full" />
+                                {...register("photoUrl", { required: 'This is required' })}
+                                type="url" placeholder="your photo url" className="input input-bordered w-full" />
                             {errors.photoUrl && <p className='text-right text-red-600 my-1 text-xs'>{errors.photoUrl?.message}</p>}
                         </div>
                         <div className='py-3'>
@@ -88,8 +88,8 @@ const Register = () => {
                             {errors.email && <p className='text-right text-red-600 my-1 text-xs'>{errors.email?.message}</p>}
                         </div>
                         <div className='py-3'>
+                            <label className='label'><span className='label-text'>Regster as</span></label>
                             <select {...register("userRole", { required: 'This Field is required' })} className="select select-bordered w-full" placeholder='Register as...'>
-                                <option value="">Register as...</option>
                                 <option value="Buyer">Buyer</option>
                                 <option value="Seller">Seller</option>
                             </select>

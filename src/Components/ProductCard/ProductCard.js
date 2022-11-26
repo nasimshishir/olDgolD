@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
+import BookingModal from '../BookingModal/BookingModal';
 // import BsPatchCheckFill from 'react-icons/bs'
 
 const ProductCard = ({ product }) => {
-    const { brand, image, price, condition, sellerName, location, postDate, originalPrice, usedDuration } = product;
+    const { _id, brand, image, price, condition, sellerName, location, postDate, orginalPrice
+        , usedDuration, status } = product;
+
+    const [bookingModal, setBookingModal] = useState(status)
     return (
         <div>
             <div className="card bg-base-200 shadow-xl p-5">
@@ -26,10 +30,20 @@ const ProductCard = ({ product }) => {
 
                 <div className="mt-3">
                     <p><span className=' font-semibold'>Pick Up Point:</span> {location}</p>
-                    <p><span className=' font-semibold'>Original Price:</span> {originalPrice}tk</p>
+                    <p><span className=' font-semibold'>Original Price:</span> {orginalPrice
+                    }tk</p>
                     <p><span className=' font-semibold'>Years of use:</span> {usedDuration}</p>
+                    <label
+                        onClick={() => setBookingModal(_id)} htmlFor="booking-form-modal"
+                        className={`mt-3 btn ${status === "available" ? "btn-outline" : "btn-error btn-sm"}`}
+                    >{status === "available" ? "Book Item" : "Sold"}</label>
                 </div>
             </div>
+            {status === "available" && bookingModal &&
+                <BookingModal
+                    setBookingModal={setBookingModal}
+                    product={product}
+                ></BookingModal>}
         </div>
     );
 };
