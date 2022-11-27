@@ -25,7 +25,7 @@ const Register = () => {
                 }
                 const userInfo = {
                     displayName: data.name,
-                    photURL: data.photoUrl
+                    photoURL: data.photoUrl
                 }
                 updateUserInfo(userInfo)
                     .then(() => {

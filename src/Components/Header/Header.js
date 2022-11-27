@@ -39,7 +39,7 @@ const Header = () => {
 
                     </div>
                     <div className="flex-1">
-                        <Link to='/' className="btn btn-ghost normal-case text-xl"><img className='max-w-[50px]' src={logo} alt="" srcset="" /></Link>
+                        <Link to='/' className="btn btn-ghost normal-case text-xl"><img className='max-w-[50px]' src={logo} alt="" srcSet="" /></Link>
                         <Link to='/' className="btn btn-ghost normal-case text-xl">olDgolD</Link>
                     </div>
                     {/* Desktop Nav */}

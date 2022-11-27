@@ -35,11 +35,11 @@ const ProductCard = ({ product }) => {
                     <p><span className=' font-semibold'>Years of use:</span> {usedDuration}</p>
                     <label
                         onClick={() => setBookingModal(_id)} htmlFor="booking-form-modal"
-                        className={`mt-3 btn ${status === "available" ? "btn-outline" : "btn-error btn-sm"}`}
-                    >{status === "available" ? "Book Item" : "Sold"}</label>
+                        className={`mt-3 btn ${status ? "btn-outline" : "btn-error btn-sm"}`}
+                    >{status ? "Book Item" : "Sold"}</label>
                 </div>
             </div>
-            {status === "available" && bookingModal &&
+            {status && bookingModal &&
                 <BookingModal
                     setBookingModal={setBookingModal}
                     product={product}

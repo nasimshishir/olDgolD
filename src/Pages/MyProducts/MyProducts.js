@@ -3,7 +3,8 @@ import React, { useContext, useState } from 'react';
 import AddProductModal from '../../Components/AddProductModal/AddProductModal';
 import Spinner from '../../Components/Spinner/Spinner'
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
-import { FaRegTrashAlt, FaEdit } from 'react-icons/fa'
+import { FaRegTrashAlt, } from 'react-icons/fa'
+import { RiAdvertisementLine } from 'react-icons/ri'
 
 
 const MyProducts = () => {
@@ -41,8 +42,9 @@ const MyProducts = () => {
                             </th>
                             <th>Product</th>
                             <th>Category</th>
-                            <th>Status Color</th>
-                            <th></th>
+                            <th>Status</th>
+                            <th>Advertise</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -64,20 +66,24 @@ const MyProducts = () => {
                                             </div>
                                             <div>
                                                 <div className="font-bold">{product.brand}</div>
-                                                <div className="text-sm opacity-50">{product.model}</div>
+                                                <div className="text-sm opacity-50">Model: {product.model}</div>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
                                         {product.category}
                                         <br />
-                                        <span className="badge badge-ghost badge-sm">${product.price}</span>
+                                        <span className="badge badge-ghost badge-sm">Price: ${product.price}</span>
                                     </td>
                                     <td>
-                                        <button className="btn btn-ghost btn-xs">{product.status}</button>
+                                        <button className={`btn btn-xs text-white ${product.status ? "btn-success" : "btn-error"}`}>{product.status ? "Available" : "Sold"}</button>
                                     </td>
                                     <td>
-                                        <button className="btn btn-ghost btn-md"><FaEdit /></button>
+                                        {product.status ?
+                                            <button className="btn btn-ghost btn-sm">{product.adStatus ? "Featured" : <RiAdvertisementLine size={24} />}</button>
+                                            : <button className='btn btn-error btn-xs text-white'>Sold</button>}
+                                    </td>
+                                    <td>
                                         <button className="btn btn-ghost btn-md"><FaRegTrashAlt /></button>
                                     </td>
                                 </tr>)
@@ -89,8 +95,9 @@ const MyProducts = () => {
                             <th></th>
                             <th>Product</th>
                             <th>Category</th>
-                            <th>Status Color</th>
-                            <th></th>
+                            <th>Status</th>
+                            <th>Advertise</th>
+                            <th>Action</th>
                         </tr>
                     </tfoot>
 

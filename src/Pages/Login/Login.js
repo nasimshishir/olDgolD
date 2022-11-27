@@ -35,11 +35,35 @@ const Login = () => {
     const handleGoogleSignIn = () => {
         providerLogin(googleProvider)
             .then(result => {
+                if (result.user?.email === "user") {
+                    storeUser(result.user.email, result.user.displayName)
+                }
                 toast.success('Login Successfull');
                 navigate(from, { replace: true })
             })
             .catch(error => console.error(error))
 
+    }
+    const storeUser = (name, email) => {
+        const user = {
+            name,
+            email,
+            userRole: "Buyer",
+            verified: false
+        };
+
+        fetch('https://final-server-one.vercel.app/users', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        })
+            .then(res => res.json())
+            .then(data => {
+                navigate(from, { replace: true })
+            })
+            .catch(error => console.log(error))
     }
 
     return (
