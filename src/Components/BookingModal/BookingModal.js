@@ -18,7 +18,7 @@ const BookingModal = ({ product, setBookingModal }) => {
             buyerName: data.buyerName,
             buyerEmail: data.buyerEmail,
             buyerPhone: data.buyerPhone,
-            availablestatus: status,
+            availableStatus: status,
             adStatus,
             paymentStatus: false
         }
@@ -52,7 +52,7 @@ const BookingModal = ({ product, setBookingModal }) => {
                             <label className='label'><span className='label-text'>Name</span></label>
                             <input
                                 {...register("buyerName", { required: 'This Field is required' })}
-                                type="text" className="input input-bordered w-full" defaultValue={user?.displayName} />
+                                type="text" className="input input-bordered w-full" defaultValue={user?.displayName} disabled />
                             {errors.buyerName && <p className='text-right text-red-600 my-1 text-xs'>{errors.buyerName?.message}</p>}
                         </div>
                         <div className='py-1'>

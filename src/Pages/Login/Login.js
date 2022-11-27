@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import { GoogleAuthProvider } from 'firebase/auth';
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form'
@@ -8,13 +9,23 @@ import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 
 
 const Login = () => {
-    const { LoginWithEmailPassword, providerLogin } = useContext(AuthContext)
+    const { LoginWithEmailPassword, providerLogin, user } = useContext(AuthContext)
     const [logError, setLogError] = useState('')
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || '/'
     const { register, formState: { errors }, handleSubmit } = useForm()
     const googleProvider = new GoogleAuthProvider()
+
+    const { data: userInfo = {} } = useQuery({
+        queryKey: ['user', user?.email],
+        queryFn: async () => {
+            const res = await fetch(`https://final-server-one.vercel.app/user?email=${user?.email}`);
+            const data = await res.json();
+            return data
+        }
+    });
+
 
     const handleLogin = data => {
         setLogError('')
@@ -35,11 +46,10 @@ const Login = () => {
     const handleGoogleSignIn = () => {
         providerLogin(googleProvider)
             .then(result => {
-                if (result.user?.email === "user") {
+                if (result.user?.email === !userInfo.email) {
                     storeUser(result.user.email, result.user.displayName)
                 }
                 toast.success('Login Successfull');
-                navigate(from, { replace: true })
             })
             .catch(error => console.error(error))
 

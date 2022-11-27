@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import BookingModal from '../BookingModal/BookingModal';
-// import BsPatchCheckFill from 'react-icons/bs'
+import { GoVerified } from 'react-icons/go'
 
 const ProductCard = ({ product }) => {
     const { _id, brand, image, price, condition, sellerName, location, postDate, orginalPrice
-        , usedDuration, status } = product;
+        , usedDuration, status, sellerStatus } = product;
 
     const [bookingModal, setBookingModal] = useState(status)
     return (
@@ -20,7 +20,7 @@ const ProductCard = ({ product }) => {
                 <p className='badge badge-primary text-white mt-3'>Condition: {condition}</p>
 
                 <div className='mt-3 flex'>
-                    <p className='text-xl font-semibold text-accent'>Seller: {sellerName}</p>
+                    <p className='text-xl font-semibold text-accent'>Seller: {sellerName}{sellerStatus ? <GoVerified value={{ color: 'blue', size: '20px' }} /> : ""}</p>
                     {/* {
                         verifySeller ?
                             <p> < BsPatchCheckFill color="cornflowerblue" /> </p> : <p> </p>

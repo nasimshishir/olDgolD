@@ -7,7 +7,7 @@ export const AuthContext = createContext();
 const auth = getAuth(app);
 
 const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null)
+    const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
 
@@ -39,12 +39,13 @@ const AuthProvider = ({ children }) => {
         const unsubscribe = onAuthStateChanged(auth,
             (currentUser) => {
                 console.log('user in auth state change', currentUser);
-                setUser(currentUser)
+                setUser(currentUser);
                 setIsLoading(false);
             });
         return () => unsubscribe();
 
     }, [])
+
 
     const authInfo = {
         user,

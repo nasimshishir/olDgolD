@@ -5,11 +5,11 @@ import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast';
 
 
-const AddProductModal = ({ setModal, user, refetch }) => {
+const AddProductModal = ({ setModal, user, userInfo, refetch }) => {
     const { register, formState: { errors }, handleSubmit } = useForm()
 
     const { data: categories = [] } = useQuery({
-        queryKey: ['categores',],
+        queryKey: ['categoires',],
         queryFn: async () => {
             const res = await fetch('https://final-server-one.vercel.app/categories');
             const data = await res.json();
@@ -37,6 +37,7 @@ const AddProductModal = ({ setModal, user, refetch }) => {
             sellerName: user.displayName,
             sellerPhone: data.sellerPhone,
             sellerEmail: user.email,
+            sellerStatus: userInfo.verified,
             status: true,
             adStatus: false
         }
