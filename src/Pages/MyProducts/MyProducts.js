@@ -14,20 +14,13 @@ const MyProducts = () => {
     const [addProductModal, setAddProductModal] = useState(true);
     const [delProduct, setDelProduct] = useState(null);
     const [updProduct, setUpdProduct] = useState(null);
+    const [updProductAd, setUpdProductAd] = useState(null);
 
     const closeModal = () => {
         setDelProduct(null);
         setUpdProduct(null)
+        setUpdProductAd(null)
     }
-
-    // const { data: userInfo = {} } = useQuery({
-    //     queryKey: ['user', user?.email],
-    //     queryFn: async () => {
-    //         const res = await fetch(`https://final-server-one.vercel.app/user?email=${user?.email}`);
-    //         const data = await res.json();
-    //         return data
-    //     }
-    // });
 
 
     const { data: myProducts = [], refetch, isLoading } = useQuery({
@@ -67,6 +60,25 @@ const MyProducts = () => {
             .then(data => {
                 if (data.modifiedCount > 0) {
                     toast.success(`Congrates! Your products is Sold!`)
+                    refetch()
+                }
+            })
+
+    }
+
+    const handleUpdateProductAd = (product) => {
+        fetch(`https://final-server-one.vercel.app/productad/${product._id}`, {
+            method: 'PATCH',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify({ adStatus: !product.adStatus })
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.modifiedCount > 0) {
+                    toast.success(`Congrates! Your products is Featured!`)
+                    refetch()
                 }
             })
 
@@ -76,13 +88,16 @@ const MyProducts = () => {
         return <Spinner></Spinner>
     }
     return (
-        <div className='container mx-auto'>
+        <div className='container mx-auto py-16'>
             <div className='flex justify-end'>
                 <label htmlFor="product-form-modal" className="btn">Add Products</label>
             </div>
 
             {/* My Products */}
             <div className="overflow-x-auto w-full">
+                <div className='my-10'>
+                    <h5 className='text-4xl text-center font-bold'>My Products</h5>
+                </div>
                 <table className="table w-full">
                     <thead>
                         <tr>
@@ -127,11 +142,12 @@ const MyProducts = () => {
                                         <span className="badge badge-ghost badge-sm">Price: ${product.price}</span>
                                     </td>
                                     <td>
-                                        <label onClick={() => { setUpdProduct(product) }} className={`btn btn-xs text-white ${product.status ? "btn-success" : "btn-error"}`} htmlFor="confirmation-modal">{product.status ? "Available" : "Sold"}</label>
+                                        {product.status ? <label onClick={() => { setUpdProduct(product) }} className='btn btn-xs text-white btn-success' htmlFor="confirmation-modal">Available</label> :
+                                            <button className='btn btn-xs btn-error text-white'>Sold</button>}
                                     </td>
                                     <td>
                                         {product.status ?
-                                            <button className="btn btn-ghost btn-sm">{product.adStatus ? "Featured" : <RiAdvertisementLine size={24} />}</button>
+                                            <label onClick={() => { setUpdProductAd(product) }} className={`btn btn-xs ${product.adStatus ? "btn-primary" : "btn-ghost"}`} htmlFor="confirmation-modal">{product.adStatus ? "Featured" : <RiAdvertisementLine size={24} />}</label>
                                             : <button className='btn btn-error btn-xs text-white'>Sold</button>}
                                     </td>
                                     <td>
@@ -178,6 +194,16 @@ const MyProducts = () => {
                 closeModal={closeModal}
                 actionData={updProduct}
                 actionFunction={handleUpdateProduct}
+            ></ConfirmationModal>
+            }
+
+            {updProductAd && <ConfirmationModal
+                title={`Are you sure you want to run Advertise for ${updProductAd.brand}?`}
+                message={`If you confirm , it will be Featured!`}
+                actionButtonName={"Confirm"}
+                closeModal={closeModal}
+                actionData={updProductAd}
+                actionFunction={handleUpdateProductAd}
             ></ConfirmationModal>
             }
         </div>
