@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 import toast from 'react-hot-toast';
 import Header from '../../Components/Header/Header';
+import useJwt from '../../Hooks/jwtHook/useJwt';
 
 
 const Register = () => {
@@ -13,6 +14,12 @@ const Register = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || '/'
+    const [newUserEmail, setNewUserEmail] = useState('')
+    const [token] = useJwt(newUserEmail)
+
+    if (token) {
+        navigate(from, { replace: true });
+    }
 
     const { register, formState: { errors }, handleSubmit } = useForm()
 
@@ -57,10 +64,12 @@ const Register = () => {
         })
             .then(res => res.json())
             .then(data => {
-                navigate(from, { replace: true })
+                setNewUserEmail(email);
             })
             .catch(error => console.log(error))
     }
+
+
 
     return (
         <>

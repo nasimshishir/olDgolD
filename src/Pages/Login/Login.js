@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
 import { GoogleAuthProvider } from 'firebase/auth';
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form'
@@ -6,17 +5,23 @@ import toast from 'react-hot-toast';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Header from '../../Components/Header/Header';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
+import useJwt from '../../Hooks/jwtHook/useJwt';
 
 
 const Login = () => {
     const { LoginWithEmailPassword, providerLogin } = useContext(AuthContext)
     const [logError, setLogError] = useState('')
+    const [newUserEmail, setNewUserEmail] = useState('')
+    const [token] = useJwt(newUserEmail)
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || '/'
     const { register, formState: { errors }, handleSubmit } = useForm()
     const googleProvider = new GoogleAuthProvider()
 
+    if (token) {
+        navigate(from, { replace: true })
+    }
 
 
 
@@ -25,13 +30,12 @@ const Login = () => {
         LoginWithEmailPassword(data.email, data.password)
             .then(result => {
                 setLogError('');
-                toast.success('Login Successful')
-                navigate(from, { replace: true })
+                toast.success('Login Successful');
+                setNewUserEmail(data.email)
             })
             .catch(error => {
                 console.error(error);
                 setLogError(error.message)
-
             })
     }
 
@@ -63,7 +67,7 @@ const Login = () => {
         })
             .then(res => res.json())
             .then(data => {
-                navigate(from, { replace: true })
+                setNewUserEmail(email)
             })
             .catch(error => console.log(error))
     }
