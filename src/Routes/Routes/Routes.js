@@ -7,6 +7,8 @@ import MyBookings from "../../Pages/MyBookings/MyBookings";
 import MyProducts from "../../Pages/MyProducts/MyProducts";
 import Products from "../../Pages/Products/Products";
 import Register from "../../Pages/Sign up/Register";
+import Buyers from "../../Pages/Users/Buyers/Buyers";
+import Sellers from "../../Pages/Users/Sellers/Sellers";
 import PrivateRoute from "../Private Routes/PrivateRoute";
 
 const routes = createBrowserRouter([
@@ -49,6 +51,14 @@ const routes = createBrowserRouter([
             {
                 path: '/dashboard/mybookings',
                 element: <PrivateRoute><MyBookings></MyBookings></PrivateRoute>
+            },
+            {
+                path: '/dashboard/sellers',
+                element: <PrivateRoute><Sellers></Sellers></PrivateRoute>
+            },
+            {
+                path: '/dashboard/buyers',
+                element: <PrivateRoute><Buyers></Buyers></PrivateRoute>
             }
         ]
     }

@@ -29,7 +29,7 @@ const Register = () => {
                 }
                 updateUserInfo(userInfo)
                     .then(() => {
-                        storeUser(data.name, data.email, data.userRole)
+                        storeUser(data.name, data.email, data.userRole, data.photoUrl)
                     })
                     .catch(error => console.error(error))
             })
@@ -39,10 +39,11 @@ const Register = () => {
             })
     }
 
-    const storeUser = (name, email, userRole) => {
+    const storeUser = (name, email, userRole, photo) => {
         const user = {
             name,
             email,
+            photo,
             userRole,
             verified: false
         };
@@ -99,7 +100,7 @@ const Register = () => {
                             <input
                                 {...register("password",
                                     {
-                                        required: 'Passwrd is required',
+                                        required: 'Password is required',
                                         minLength: { value: 6, message: 'Minimum 6 characters required' }
                                     })}
                                 type="password" placeholder="password" className="input input-bordered w-full" />

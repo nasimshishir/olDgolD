@@ -1,18 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import Spinner from '../../../Components/Spinner/Spinner';
 import { FaRegTrashAlt } from 'react-icons/fa'
-import Spinner from '../../Components/Spinner/Spinner';
 
-const Users = () => {
-
-    const [verifyUser, setVerifyUser] = useState(null);
+const Buyers = () => {
     const [delUser, setDelUser] = useState(null);
 
-    const { data: users = [], refetch, isLoading } = useQuery({
-        queryKey: ['products',],
+    const closeModal = () => {
+        setDelUser(null)
+    }
+
+    const { data: buyers = [], refetch, isLoading } = useQuery({
+        queryKey: ['Users', 'Buyer'],
         queryFn: async () => {
-            const res = await fetch('https://final-server-one.vercel.app/users');
+            const res = await fetch('https://final-server-one.vercel.app/users?userRole=Buyer')
             const data = await res.json();
             return data
         }
@@ -24,13 +25,12 @@ const Users = () => {
     }
 
     return (
-        <div>
+        <div className='conatiner mx-auto py-16'>
 
             {/* Sellers*/}
-            {/* My Products */}
             <div className="overflow-x-auto w-full">
                 <div className='my-10'>
-                    <h5 className='text-4xl text-center font-bold'>My Products</h5>
+                    <h5 className='text-4xl text-center font-bold'>Buyers</h5>
                 </div>
                 <table className="table w-full">
                     <thead>
@@ -40,17 +40,16 @@ const Users = () => {
                                     <input type="checkbox" className="checkbox" />
                                 </label>
                             </th>
-                            <th>Product</th>
-                            <th>Category</th>
-                            <th>Status</th>
-                            <th>Advertise</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Type</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
 
                         {
-                            users.map((product, i) =>
+                            buyers.map((buyer, i) =>
                                 <tr key={i}>
                                     <th>
                                         <label>
@@ -61,26 +60,28 @@ const Users = () => {
                                         <div className="flex items-center space-x-3">
                                             <div className="avatar">
                                                 <div className="mask mask-squircle w-12 h-12">
-                                                    <img src={product.image} alt="Avatar Tailwind CSS Component" />
+                                                    <img src={buyer.image} alt="Avatar Tailwind CSS Component" />
                                                 </div>
                                             </div>
                                             <div>
-                                                <div className="font-bold">{product.brand}</div>
-                                                <div className="text-sm opacity-50">Model: {product.model}</div>
+                                                <div className="font-bold">{buyer.brand}</div>
+                                                <div className="text-sm opacity-50">Model: {buyer.model}</div>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
-                                        {product.category}
+                                        {buyer.category}
                                         <br />
-                                        <span className="badge badge-ghost badge-sm">Price: ${product.price}</span>
+                                        <span className="badge badge-ghost badge-sm">Price: ${buyer.price}</span>
                                     </td>
                                     <td>
-                                        {product.status ? <label onClick={() => { setVerifyUser(product) }} className='btn btn-xs text-white btn-success' htmlFor="confirmation-modal">Available</label> :
-                                            <button className='btn btn-xs btn-error text-white'>Sold</button>}
+                                        {buyer.category}
+                                        <br />
+                                        <span className="badge badge-ghost badge-sm">Price: ${buyer.price}</span>
                                     </td>
+
                                     <td>
-                                        <label onClick={() => setDelUser(product)} htmlFor="confirmation-modal" className="btn btn-ghost btn-md"><FaRegTrashAlt /></label>
+                                        <label onClick={() => setDelUser(buyer)} htmlFor="confirmation-modal" className="btn btn-ghost btn-md"><FaRegTrashAlt /></label>
                                     </td>
                                 </tr>)
                         }
@@ -89,10 +90,9 @@ const Users = () => {
                     <tfoot>
                         <tr>
                             <th></th>
-                            <th>Product</th>
-                            <th>Category</th>
-                            <th>Status</th>
-                            <th>Advertise</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Type</th>
                             <th>Action</th>
                         </tr>
                     </tfoot>
@@ -100,8 +100,11 @@ const Users = () => {
                 </table>
             </div>
 
+
+
+
         </div>
     );
 };
 
-export default Users;
+export default Buyers;
