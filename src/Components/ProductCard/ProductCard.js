@@ -7,6 +7,7 @@ const ProductCard = ({ product }) => {
         , usedDuration, status, sellerStatus } = product;
 
     const [bookingModal, setBookingModal] = useState(status)
+
     return (
         <div>
             <div className="card bg-base-200 shadow-xl p-5">

@@ -15,6 +15,7 @@ const BookingModal = ({ product, setBookingModal }) => {
             productBrand: brand,
             productModel: model,
             price,
+            meetingLocation: data.meetingLocation,
             buyerName: data.buyerName,
             buyerEmail: data.buyerEmail,
             buyerPhone: data.buyerPhone,
@@ -63,6 +64,13 @@ const BookingModal = ({ product, setBookingModal }) => {
                             {errors.buyerEmail && <p className='text-right text-red-600 my-1 text-xs'>{errors.buyerEmail?.message}</p>}
                         </div>
 
+                        <div className='py-1'>
+                            <label className='label'><span className='label-text'>Phone</span></label>
+                            <input
+                                {...register("meetingLocation", { required: 'This Field is required' })}
+                                type="text" placeholder="Where yuo wnat to meet to see product?" className="input input-bordered w-full" />
+                            {errors.meetingLocation && <p className='text-right text-red-600 my-1 text-xs'>{errors.meetingLocation?.message}</p>}
+                        </div>
                         <div className='py-1'>
                             <label className='label'><span className='label-text'>Phone</span></label>
                             <input

@@ -38,6 +38,15 @@ const Home = () => {
 
             </section>
 
+            {/* Featured Products */}
+
+            <section>
+                <div className='text-center'>
+                    <h4 className='font-bold py-5 text-xl text-black-500'>Featured Items</h4>
+                </div>
+
+            </section>
+
 
         </div>
     );

@@ -1,24 +1,22 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
-import { useContext } from 'react';
-import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
-import { FaRegTrashAlt, } from 'react-icons/fa'
+import { useState } from 'react';
+import { FaRegTrashAlt } from 'react-icons/fa'
 import Spinner from '../../Components/Spinner/Spinner';
 
+const Users = () => {
 
-const MyBookings = () => {
-    const { user } = useContext(AuthContext);
+    const [verifyUser, setVerifyUser] = useState(null);
+    const [delUser, setDelUser] = useState(null);
 
-
-    const { data: mybookings = [], isLoading } = useQuery({
-        queryKey: ['products', user?.email],
+    const { data: users = [], refetch, isLoading } = useQuery({
+        queryKey: ['products',],
         queryFn: async () => {
-            const res = await fetch(`https://final-server-one.vercel.app/bookings?email=${user.email}`);
+            const res = await fetch('https://final-server-one.vercel.app/users');
             const data = await res.json();
             return data
         }
     });
-
 
 
     if (isLoading) {
@@ -26,7 +24,10 @@ const MyBookings = () => {
     }
 
     return (
-        <div className='container mx-auto py-16'>
+        <div>
+
+            {/* Sellers*/}
+            {/* My Products */}
             <div className="overflow-x-auto w-full">
                 <div className='my-10'>
                     <h5 className='text-4xl text-center font-bold'>My Products</h5>
@@ -42,14 +43,14 @@ const MyBookings = () => {
                             <th>Product</th>
                             <th>Category</th>
                             <th>Status</th>
-                            <th>Payment</th>
+                            <th>Advertise</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
 
                         {
-                            mybookings.map((booking, i) =>
+                            users.map((product, i) =>
                                 <tr key={i}>
                                     <th>
                                         <label>
@@ -60,31 +61,26 @@ const MyBookings = () => {
                                         <div className="flex items-center space-x-3">
                                             <div className="avatar">
                                                 <div className="mask mask-squircle w-12 h-12">
-                                                    <img src={booking.image} alt="Avatar Tailwind CSS Component" />
+                                                    <img src={product.image} alt="Avatar Tailwind CSS Component" />
                                                 </div>
                                             </div>
                                             <div>
-                                                <div className="font-bold">{booking.brand}</div>
-                                                <div className="text-sm opacity-50">Model: {booking.model}</div>
+                                                <div className="font-bold">{product.brand}</div>
+                                                <div className="text-sm opacity-50">Model: {product.model}</div>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
-                                        {booking.category}
+                                        {product.category}
                                         <br />
-                                        <span className="badge badge-ghost badge-sm">Price: ${booking.price}</span>
+                                        <span className="badge badge-ghost badge-sm">Price: ${product.price}</span>
                                     </td>
                                     <td>
-                                        {booking.status ? <label className='btn btn-xs text-white btn-success' htmlFor="confirmation-modal">Available</label> :
+                                        {product.status ? <label onClick={() => { setVerifyUser(product) }} className='btn btn-xs text-white btn-success' htmlFor="confirmation-modal">Available</label> :
                                             <button className='btn btn-xs btn-error text-white'>Sold</button>}
                                     </td>
                                     <td>
-                                        {booking.status ?
-                                            <label className={`btn btn-xs ${booking.adStatus ? "btn-primary" : "btn-ghost"}`} htmlFor="confirmation-modal">{booking.adStatus ? "Featured" : ''}</label>
-                                            : <button className='btn btn-error btn-xs text-white'>Sold</button>}
-                                    </td>
-                                    <td>
-                                        <label htmlFor="confirmation-modal" className="btn btn-ghost btn-md"><FaRegTrashAlt /></label>
+                                        <label onClick={() => setDelUser(product)} htmlFor="confirmation-modal" className="btn btn-ghost btn-md"><FaRegTrashAlt /></label>
                                     </td>
                                 </tr>)
                         }
@@ -96,7 +92,7 @@ const MyBookings = () => {
                             <th>Product</th>
                             <th>Category</th>
                             <th>Status</th>
-                            <th>Payment</th>
+                            <th>Advertise</th>
                             <th>Action</th>
                         </tr>
                     </tfoot>
@@ -108,4 +104,4 @@ const MyBookings = () => {
     );
 };
 
-export default MyBookings;
+export default Users;
