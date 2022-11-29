@@ -5,7 +5,7 @@ import Spinner from '../../Components/Spinner/Spinner'
 import { Navigate, useLocation } from 'react-router-dom';
 
 const PrivateRoute = ({ children }) => {
-    const { user, isLoading } = useContext(AuthContext)
+    const { user, isLoading } = useContext(AuthContext);
     const location = useLocation();
 
 

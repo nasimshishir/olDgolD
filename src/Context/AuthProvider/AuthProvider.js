@@ -8,10 +8,11 @@ const auth = getAuth(app);
 
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
 
     const providerLogin = (provider) => {
+        setIsLoading(true)
         return signInWithPopup(auth, provider)
     }
 
@@ -32,6 +33,7 @@ const AuthProvider = ({ children }) => {
     }
 
     const updateUserInfo = (userInfo) => {
+        setIsLoading(true);
         return updateProfile(auth.currentUser, userInfo)
     }
 

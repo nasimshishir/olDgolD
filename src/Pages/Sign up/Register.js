@@ -6,6 +6,7 @@ import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 import toast from 'react-hot-toast';
 import Header from '../../Components/Header/Header';
 import useJwt from '../../Hooks/jwtHook/useJwt';
+import axios from 'axios'
 
 
 const Register = () => {
@@ -24,6 +25,7 @@ const Register = () => {
     const { register, formState: { errors }, handleSubmit } = useForm()
 
     const handleRegister = data => {
+        console.log(data);
         setRegError('')
         RegisterWithEmailPassword(data.email, data.password)
             .then(result => {
@@ -36,6 +38,7 @@ const Register = () => {
                 }
                 updateUserInfo(userInfo)
                     .then(() => {
+                        toast.success('Profile info Updated')
                         storeUser(data.name, data.email, data.userRole, data.photoUrl)
                     })
                     .catch(error => console.error(error))
@@ -55,15 +58,9 @@ const Register = () => {
             verified: false
         };
 
-        fetch(`https://final-server-one.vercel.app/users/${email}`, {
-            method: 'PUT',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify(user)
-        })
-            .then(res => res.json())
-            .then(data => {
+        axios.put(`http://localhost:5000/users/${email}`, user)
+            .then(res => {
+                toast.success('Stored', res)
                 setNewUserEmail(email);
             })
             .catch(error => console.log(error))
@@ -98,14 +95,6 @@ const Register = () => {
                             {errors.email && <p className='text-right text-red-600 my-1 text-xs'>{errors.email?.message}</p>}
                         </div>
                         <div className='py-3'>
-                            <label className='label'><span className='label-text'>Regster as</span></label>
-                            <select {...register("userRole", { required: 'This Field is required' })} className="select select-bordered w-full" placeholder='Register as...'>
-                                <option value="Buyer">Buyer</option>
-                                <option value="Seller">Seller</option>
-                            </select>
-                            {errors.userRole && <p className='text-right text-red-600 my-1 text-xs'>{errors.userRole?.message}</p>}
-                        </div>
-                        <div className='py-3'>
                             <input
                                 {...register("password",
                                     {
@@ -114,15 +103,21 @@ const Register = () => {
                                     })}
                                 type="password" placeholder="password" className="input input-bordered w-full" />
                             {errors.password && <p className='text-right text-red-600 my-1 text-xs'>{errors.password?.message}</p>}
-                            <label>
-                                <Link><small className='label-text-alt text-xs px-3'>Forgot Password?</small></Link>
-                            </label>
+                        </div>
+                        <div className='flex py-3'>
+                            <select
+                                {...register("userRole", { required: 'This Field is required' })}
+                                className="select select-bordered w-full">
+                                <option defaultValue={'buyer'}>Buyer</option>
+                                <option value={'seller'}>Seller</option>
+                            </select>
+                            {errors.userRole && <p className='text-right text-red-600 my-1 text-xs'>{errors.userRole?.message}</p>}
                         </div>
                         {/* Firebase Error Message */}
                         {
                             regError && <p className='text-red-500 text-center my-2'>({regError})</p>
                         }
-                        <input className='btn bg-slate-700 w-full py-3' type='submit' value='Register' />
+                        <input className='btn bg-slate-700 w-full py-3 mt-5' type='submit' value='Register' />
                     </form>
 
                     <p className='text-center'>

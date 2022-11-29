@@ -10,17 +10,17 @@ import useJwt from '../../Hooks/jwtHook/useJwt';
 
 const Login = () => {
     const [logError, setLogError] = useState('')
-    const { LoginWithEmailPassword, providerLogin } = useContext(AuthContext)
-    const [newUserEmail, setNewUserEmail] = useState('')
-    const [token] = useJwt(newUserEmail)
+    const { LoginWithEmailPassword, providerLogin, isLoading } = useContext(AuthContext)
+    const [newUserEmail, setNewUserEmail] = useState('');
+    const [token] = useJwt(newUserEmail);
     const navigate = useNavigate();
     const location = useLocation();
-    const from = location.state?.from?.pathname || '/'
+    let from = location.state?.from?.pathname;
     const { register, formState: { errors }, handleSubmit } = useForm()
     const googleProvider = new GoogleAuthProvider()
 
     if (token) {
-        navigate(from, { replace: true })
+        navigate(from, { replace: true });
     }
 
 
@@ -31,7 +31,9 @@ const Login = () => {
             .then(result => {
                 setLogError('');
                 toast.success('Login Successful');
-                setNewUserEmail(data.email)
+                setNewUserEmail(data.email);
+                // this.useJwt(data.email);
+
             })
             .catch(error => {
                 console.error(error);
@@ -44,7 +46,6 @@ const Login = () => {
         providerLogin(googleProvider)
             .then(result => {
                 storeUser(result.user.displayName, result.user.email, result.user.photoURL)
-                toast.success('Login Successfull');
             })
             .catch(error => console.error(error))
 
@@ -69,13 +70,13 @@ const Login = () => {
             .then(res => res.json())
             .then(data => {
                 if (data) {
-                    toast.success('Storing Successfull');
-                    console.log(data);
                     setNewUserEmail(email)
+                    toast.success('Login Successfull');
                 }
             })
             .catch(error => console.log(error))
     }
+
 
 
     return (
@@ -96,7 +97,7 @@ const Login = () => {
                             <input
                                 {...register("password",
                                     {
-                                        required: 'Passwrd is required',
+                                        required: 'Password is required',
                                         minLength: { value: 6, message: 'Minimum 6 characters required' }
                                     })}
                                 type="password" placeholder="password" className="input input-bordered w-full" />
@@ -110,7 +111,9 @@ const Login = () => {
                             logError && <p className='text-red-500 text-center my-2'>({logError})</p>
                         }
 
-                        <input className='btn bg-slate-700 w-full py-3' type='submit' value='Login' />
+                        <button className='btn bg-slate-700 w-full py-3'>{isLoading ? <div className="flex justify-center items-center">
+                            <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status"></div>
+                        </div> : 'Login'}</button>
                     </form>
 
                     <p className='text-center'>
