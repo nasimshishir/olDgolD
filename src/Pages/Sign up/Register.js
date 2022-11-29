@@ -55,8 +55,8 @@ const Register = () => {
             verified: false
         };
 
-        fetch('https://final-server-one.vercel.app/users', {
-            method: 'POST',
+        fetch(`https://final-server-one.vercel.app/users/${email}`, {
+            method: 'PUT',
             headers: {
                 'content-type': 'application/json'
             },

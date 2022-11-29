@@ -9,8 +9,8 @@ import useJwt from '../../Hooks/jwtHook/useJwt';
 
 
 const Login = () => {
-    const { LoginWithEmailPassword, providerLogin } = useContext(AuthContext)
     const [logError, setLogError] = useState('')
+    const { LoginWithEmailPassword, providerLogin } = useContext(AuthContext)
     const [newUserEmail, setNewUserEmail] = useState('')
     const [token] = useJwt(newUserEmail)
     const navigate = useNavigate();
@@ -49,6 +49,8 @@ const Login = () => {
             .catch(error => console.error(error))
 
     }
+
+    // Store user on google sign in==================
     const storeUser = (name, email, photo) => {
         const user = {
             name,
@@ -57,9 +59,8 @@ const Login = () => {
             userRole: "Buyer",
             verified: false
         };
-
-        fetch('https://final-server-one.vercel.app/users', {
-            method: 'POST',
+        fetch(`https://final-server-one.vercel.app/users/${email}`, {
+            method: 'PUT',
             headers: {
                 'content-type': 'application/json'
             },
@@ -67,10 +68,15 @@ const Login = () => {
         })
             .then(res => res.json())
             .then(data => {
-                setNewUserEmail(email)
+                if (data) {
+                    toast.success('Storing Successfull');
+                    console.log(data);
+                    setNewUserEmail(email)
+                }
             })
             .catch(error => console.log(error))
     }
+
 
     return (
         <>

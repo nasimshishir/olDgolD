@@ -26,7 +26,11 @@ const MyProducts = () => {
     const { data: myProducts = [], refetch, isLoading } = useQuery({
         queryKey: ['products', user?.email],
         queryFn: async () => {
-            const res = await fetch(`https://final-server-one.vercel.app/products?email=${user.email}`);
+            const res = await fetch(`https://final-server-one.vercel.app/products?email=${user.email}`, {
+                headers: {
+                    authorization: `bearer ${localStorage.getItem('accessToken')}`
+                }
+            });
             const data = await res.json();
             return data
         }
