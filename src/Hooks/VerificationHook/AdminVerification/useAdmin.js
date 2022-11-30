@@ -6,7 +6,7 @@ const useAdmin = email => {
     const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
         if (email) {
-            fetch(`http://localhost:5000/admin`)
+            fetch(`/admin`)
         }
     }, [email])
 }

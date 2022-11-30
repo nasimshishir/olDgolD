@@ -3,12 +3,16 @@ import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 import logo from '../../assets/images/logo.png'
+import { useSeller } from '../../Hooks/VerificationHook/SellerVerification/useSeller';
+import Spinner from '../Spinner/Spinner';
 
 const Header = () => {
     const { user, logOut } = useContext(AuthContext);
+    const [isSeller, isSellerLoading] = useSeller()
 
     const handleLogOut = () => {
         logOut()
+        localStorage.removeItem('accessToken')
     }
     const menuItems = <>
         <li><Link to="/">Home</Link></li>
@@ -16,7 +20,7 @@ const Header = () => {
     </>
 
     const userMenu = <>
-        {/* {user.userRole === "Seller" && <li><Link to="/dashboard/myproducts">Dashboard</Link></li>} */}
+        {isSeller && <li><Link to="/dashboard/myproducts">Dashboard</Link></li>}
         {/* {user.userRole === "Buyer" && <li><Link to="/dashboard/mybookings">Dashboard</Link></li>} */}
         {/* {user.userRole === "Admin" && <li><Link to="/dashboard/myusers">Dashboard</Link></li>} */}
 
@@ -55,7 +59,7 @@ const Header = () => {
                         user ? <div className="dropdown dropdown-end">
                             <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                                 <div className="w-10 rounded-full">
-                                    <img src={user?.photoURL} alt="" />
+                                    {isSellerLoading ? <Spinner /> : <img src={user?.photoURL} alt="" />}
                                 </div>
                             </label>
                             <ul tabIndex={0} className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52">

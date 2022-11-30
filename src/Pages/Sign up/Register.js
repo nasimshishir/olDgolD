@@ -58,7 +58,7 @@ const Register = () => {
             verified: false
         };
 
-        axios.put(`http://localhost:5000/users/${email}`, user)
+        axios.put(`https://final-server-one.vercel.app/users/${email}`, user)
             .then(res => {
                 toast.success('Stored', res)
                 setNewUserEmail(email);

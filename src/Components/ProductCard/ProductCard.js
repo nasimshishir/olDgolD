@@ -1,43 +1,34 @@
 import React, { useState } from 'react';
 import BookingModal from '../BookingModal/BookingModal';
-import { GoVerified } from 'react-icons/go'
+import Verified from '../Icons/Verified';
 
 const ProductCard = ({ product }) => {
-    const { _id, brand, image, price, condition, sellerName, location, postDate, orginalPrice
-        , usedDuration, status, sellerStatus } = product;
+    const { _id, brand, model, image, price, condition, sellerName, location, postDate, orginalPrice, category, usedDuration, status, sellerStatus, adStatus } = product;
 
     const [bookingModal, setBookingModal] = useState(status)
 
     return (
-        <div>
-            <div className="card bg-base-200 shadow-xl p-5">
-                <div className='flex justify-between mb-2'>
-                    <h2 className="text-2xl font-semibold">{brand}</h2>
-                    <h1 className='text-3xl font-bold text-primary'>{price}tk</h1>
-                </div>
-
-                <img src={image} alt="" className="rounded-xl" />
-
-                <p className='badge badge-primary text-white mt-3'>Condition: {condition}</p>
-
-                <div className='mt-3 flex'>
-                    <p className='text-xl font-semibold text-accent'>Seller: {sellerName}{sellerStatus ? <GoVerified value={{ color: 'blue', size: '20px' }} /> : ""}</p>
-                    {/* {
-                        verifySeller ?
-                            <p> < BsPatchCheckFill color="cornflowerblue" /> </p> : <p> </p>
-                    } */}
-                </div>
-                <p className='text-sm text-slate-400'>Posted on {postDate}</p>
-
-                <div className="mt-3">
-                    <p><span className=' font-semibold'>Pick Up Point:</span> {location}</p>
-                    <p><span className=' font-semibold'>Original Price:</span> {orginalPrice
-                    }tk</p>
-                    <p><span className=' font-semibold'>Years of use:</span> {usedDuration}</p>
-                    <label
-                        onClick={() => setBookingModal(_id)} htmlFor="booking-form-modal"
-                        className={`mt-3 btn ${status ? "btn-outline" : "btn-error btn-sm"}`}
-                    >{status ? "Book Item" : "Sold"}</label>
+        <div className='px-5'>
+            <div className="card bg-white shadow-xl">
+                <figure><img src={image} alt="Shoes" /></figure>
+                <div className="card-body">
+                    <div className='flex justify-between align-middle'>
+                        <div>
+                            <span className="text-lg font-bold">{brand}</span>
+                            <span className='text-slate-400'><small> -{model} </small></span>
+                            {adStatus && <span className="badge badge-secondary">  Featured</span>}
+                        </div>
+                        <div>
+                            <p className='font-semibold'>${price}</p>
+                        </div>
+                    </div>
+                    <p><span>{sellerName}</span> <span>{sellerStatus && < Verified />}</span></p>
+                    <div className="card-actions justify-end">
+                        <div className="badge badge-outline"><small className='font-medium'>{category}</small></div>
+                    </div>
+                    <div>
+                        <label htmlFor='booking-form-modal' className='btn btn-md'>Book Now</label>
+                    </div>
                 </div>
             </div>
             {status && bookingModal &&

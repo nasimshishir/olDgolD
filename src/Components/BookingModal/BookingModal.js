@@ -52,20 +52,20 @@ const BookingModal = ({ product, setBookingModal }) => {
                         <div className='py-1'>
                             <label className='label'><span className='label-text'>Name</span></label>
                             <input
-                                {...register("buyerName", { required: 'This Field is required' })}
+                                {...register("buyerName",)}
                                 type="text" className="input input-bordered w-full" defaultValue={user?.displayName} disabled />
                             {errors.buyerName && <p className='text-right text-red-600 my-1 text-xs'>{errors.buyerName?.message}</p>}
                         </div>
                         <div className='py-1'>
                             <label className='label'><span className='label-text'>Email</span></label>
                             <input
-                                {...register("buyerEmail", { required: 'This Field is required' })}
+                                {...register("buyerEmail",)}
                                 type="text" className="input input-bordered w-full" defaultValue={user?.email} disabled />
                             {errors.buyerEmail && <p className='text-right text-red-600 my-1 text-xs'>{errors.buyerEmail?.message}</p>}
                         </div>
 
                         <div className='py-1'>
-                            <label className='label'><span className='label-text'>Phone</span></label>
+                            <label className='label'><span className='label-text'>Location</span></label>
                             <input
                                 {...register("meetingLocation", { required: 'This Field is required' })}
                                 type="text" placeholder="Where yuo wnat to meet to see product?" className="input input-bordered w-full" />

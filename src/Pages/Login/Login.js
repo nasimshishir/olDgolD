@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Header from '../../Components/Header/Header';
+import Spinner from '../../Components/Spinner/Spinner';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 import useJwt from '../../Hooks/jwtHook/useJwt';
 
@@ -30,10 +31,8 @@ const Login = () => {
         LoginWithEmailPassword(data.email, data.password)
             .then(result => {
                 setLogError('');
-                toast.success('Login Successful');
                 setNewUserEmail(data.email);
-                // this.useJwt(data.email);
-
+                toast.success('Login Successful');
             })
             .catch(error => {
                 console.error(error);
@@ -57,7 +56,7 @@ const Login = () => {
             name,
             email,
             photo,
-            userRole: "Buyer",
+            userRole: "buyer",
             verified: false
         };
         fetch(`https://final-server-one.vercel.app/users/${email}`, {
@@ -111,9 +110,7 @@ const Login = () => {
                             logError && <p className='text-red-500 text-center my-2'>({logError})</p>
                         }
 
-                        <button className='btn bg-slate-700 w-full py-3'>{isLoading ? <div className="flex justify-center items-center">
-                            <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status"></div>
-                        </div> : 'Login'}</button>
+                        <button className='btn bg-slate-700 w-full py-3'>{isLoading ? <Spinner></Spinner> : 'Login'}</button>
                     </form>
 
                     <p className='text-center'>

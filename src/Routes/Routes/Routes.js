@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Dashboard from "../../Layouts/Dashboard/Dashboard";
 import Main from "../../Layouts/Main/Main";
+import Blog from "../../Pages/Blog/Blog";
 import Home from "../../Pages/Home/Home";
 import Login from "../../Pages/Login/Login";
 import MyBookings from "../../Pages/MyBookings/MyBookings";
@@ -29,6 +30,10 @@ const routes = createBrowserRouter([
                 loader: async ({ params }) => {
                     return fetch(`https://final-server-one.vercel.app/products/${params.id}`)
                 }
+            },
+            {
+                path: '/blog',
+                element: <Blog></Blog>
             }
         ]
     },
@@ -61,6 +66,10 @@ const routes = createBrowserRouter([
                 element: <Buyers></Buyers>
             }
         ]
+    },
+    {
+        path: '/*',
+        element: <div>404</div>
     }
 ])
 
